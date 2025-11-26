@@ -1281,6 +1281,38 @@
 				"[concat(variables('factoryId'), '/pipelines/pl_orders_raw_to_cleansed')]",
 				"[concat(variables('factoryId'), '/pipelines/pl_orders_cleansed_to_structured')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tumbling_trigger_etl_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "pl_execute_orders",
+						"type": "PipelineReference"
+					},
+					"parameters": {}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2025-11-26T16:53:00Z",
+					"endTime": "2025-11-28T16:53:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pl_execute_orders')]"
+			]
 		}
 	]
 }
