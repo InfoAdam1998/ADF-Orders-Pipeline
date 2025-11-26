@@ -6,7 +6,7 @@ This repository contains an **Azure Data Factory (ADF) project** for processing 
 
 ## How it works
 
-1. **Landing (Bronze)**  
+1. **Landing**  
    - All raw files (CSV, JSON, etc.) are uploaded to a **landing container** in Azure Blob Storage.  
    - This is just a temporary staging area for incoming data.
 
