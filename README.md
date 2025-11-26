@@ -10,7 +10,7 @@ This repository contains an **Azure Data Factory (ADF) project** for processing 
    - All raw files (CSV, JSON, etc.) are uploaded to a **landing container** in Azure Blob Storage.  
    - This is just a temporary staging area for incoming data.
 
-2. **Raw (Bronze → Raw)**  
+2. **Raw (Bronze)**  
    - The data is copied into the **raw container** in ADLS Gen2 using a Copy Activity.  
    - This keeps the original files safe and unmodified.
 
