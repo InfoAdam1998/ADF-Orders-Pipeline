@@ -1,67 +1,80 @@
 # ADF Orders Pipeline
 
-This repository contains an **Azure Data Factory (ADF) project** for processing and transforming order data using a **Bronze-Silver-Gold architecture**. The project demonstrates end-to-end data ingestion, transformation, and loading into **Azure SQL Database** for downstream consumption.
+This repository contains an **Azure Data Factory (ADF) project** for processing and transforming order data using a **Bronze-Silver-Gold architecture**. The goal is to take raw data files, clean and transform them, and make them ready for applications and reporting in **Azure SQL Database**.
 
 ---
 
-## Architecture Overview
-
-The pipeline follows a **modern data engineering approach**:
+## How it works
 
 1. **Landing (Bronze)**  
-   - Raw files of various formats are ingested into an **Azure Blob Storage** container (`landing`).  
-   - Acts as the initial staging area for all incoming data.
+   - All raw files (CSV, JSON, etc.) are uploaded to a **landing container** in Azure Blob Storage.  
+   - This is just a temporary staging area for incoming data.
 
 2. **Raw (Bronze → Raw)**  
-   - Data is copied from landing to the **raw container** in **ADLS Gen2** using a simple **Copy Activity**.  
-   - Preserves the original data for auditing and traceability.
+   - The data is copied into the **raw container** in ADLS Gen2 using a Copy Activity.  
+   - This keeps the original files safe and unmodified.
 
 3. **Cleansed (Silver)**  
-   - **Mapping Data Flows** transform and clean the raw data.  
-   - Includes typecasting, normalization, and validation.  
-   - Data is stored in the **cleansed container** in ADLS Gen2.
+   - Using **Mapping Data Flows**, the raw data is cleaned and standardized.  
+   - This includes typecasting, removing duplicates, and fixing formats.  
+   - The cleaned data is stored in the **cleansed container**.
 
 4. **Structured (Gold)**  
-   - Further transformations, joins, and aggregations are applied.  
-   - The final curated data is stored in the **structured container** (ADLS Gen2) and **Azure SQL Database**.  
-   - Supports **upsert and overwrite operations** to maintain data consistency for applications.
+   - The cleansed data is further transformed: joins, aggregations, and business logic are applied.  
+   - The final data is stored in the **structured container** and also written to **Azure SQL Database**.  
+   - Supports **upsert and overwrite**, so the SQL table stays consistent.
+
+---
+
+## Security & Authentication
+
+- Secrets are stored in **Azure Key Vault**.  
+- You can choose how the pipelines authenticate:
+  - **Service Principal**  
+  - **User Assigned Managed Identity**  
+- The project follows **least-privileged role principles**, so users only have the permissions they need.
+
+---
+
+## Scheduling
+
+- The pipelines run automatically using a **tumbling window trigger** every **15 minutes**.  
+- This makes sure new data is processed regularly without manual intervention.
 
 ---
 
 ## Pipelines
 
-- **Landing → Raw**: Simple ingestion pipeline using Copy Activity.  
-- **Raw → Cleansed**: Data Flow pipeline to clean and standardize the data.  
-- **Cleansed → Structured**: Data Flow pipeline for business-ready transformations and loading into **Azure SQL Database**.
+- **Landing → Raw**: Simple copy of files from landing to raw.  
+- **Raw → Cleansed**: Cleans and standardizes the data.  
+- **Cleansed → Structured**: Applies business transformations and loads the final data into SQL.
 
 ---
 
 ## Features
 
-- Bronze-Silver-Gold layered architecture  
-- Support for multiple input file formats (CSV, JSON, etc.)  
-- Data cleansing and transformation using **ADF Mapping Data Flows**  
-- Sink to **Azure SQL Database** with **upsert and overwrite support**  
-- Modular and scalable design for future enhancements  
+- Bronze-Silver-Gold architecture  
+- Handles multiple file formats  
+- Cleans and transforms data using Mapping Data Flows  
+- Writes to Azure SQL Database with upsert/overwrite support  
+- Flexible authentication via Key Vault, Service Principal, or Managed Identity  
+- Automated pipelines with tumbling window triggers  
+- Modular and scalable design  
 
 ---
 
 ## Requirements
 
-- Azure subscription with **Data Factory**, **Blob Storage**, and **ADLS Gen2**  
-- Azure SQL Database instance  
-- Azure Data Factory configured with Integration Runtime  
+- Azure subscription with Data Factory, Blob Storage, ADLS Gen2, and Key Vault  
+- Azure SQL Database  
+- Configured Integration Runtime  
 
 ---
 
-## Usage
+## How to use
 
-1. Clone the repository.  
-2. Import the ADF pipelines into your **Azure Data Factory** instance.  
-3. Configure your **linked services** for Blob Storage, ADLS Gen2, and SQL Database.  
-4. Trigger the pipelines in sequence:
-   - Landing → Raw  
-   - Raw → Cleansed  
-   - Cleansed → Structured  
-
----
+1. Clone the repo.  
+2. Import the pipelines into your **Azure Data Factory** instance.  
+3. Configure linked services (Blob Storage, ADLS Gen2, SQL Database, Key Vault).  
+4. Choose your preferred authentication method.  
+5. Run the pipelines manually or let the **15-minute trigger** run them automatically.
