@@ -1,0 +1,37 @@
+{
+	"name": "pl_orders_cleansed_to_structured",
+	"properties": {
+		"activities": [
+			{
+				"name": "Data Flow Cleansed to Structure",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_orders_cleansed_structured",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 32,
+						"computeType": "MemoryOptimized"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"folder": {
+			"name": "03_cleansed_to_structured"
+		},
+		"annotations": [],
+		"lastPublishTime": "2025-11-25T20:03:29Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

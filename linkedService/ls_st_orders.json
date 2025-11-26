@@ -1,0 +1,16 @@
+{
+	"name": "ls_st_orders",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://stordersunique001.blob.core.windows.net/",
+			"credential": {
+				"referenceName": "service-principal-credentials-orders",
+				"type": "CredentialReference"
+			},
+			"accountKind": "StorageV2"
+		}
+	}
+}

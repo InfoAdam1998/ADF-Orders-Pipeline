@@ -1,0 +1,15 @@
+{
+	"name": "ls_akv",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://akv-orders-unique-0001.vault.azure.net/",
+			"credential": {
+				"referenceName": "uami-credentials-orders",
+				"type": "CredentialReference"
+			}
+		}
+	}
+}

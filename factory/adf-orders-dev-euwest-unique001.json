@@ -1,0 +1,15 @@
+{
+	"name": "adf-orders-dev-euwest-unique001",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned,UserAssigned",
+		"principalId": "7e0d3f2f-e377-487b-ad07-1a04866dbb23",
+		"tenantId": "c5daae7f-6073-41e9-989d-c33dd501865e",
+		"userAssignedIdentities": {
+			"/subscriptions/c9305787-19cf-46de-8474-1f79604c4227/resourcegroups/rg-orders-dev-euwest-001/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami-orders": {
+				"clientId": "a050c13c-2a94-4f28-86ee-e7e60f9f9a89",
+				"principalId": "0d2654b4-1108-4ee4-9cf3-5a47049c4993"
+			}
+		}
+	}
+}
